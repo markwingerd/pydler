@@ -1,4 +1,5 @@
 *.py[co]
+*gitignore~
 
 # Packages
 *.egg
@@ -27,4 +28,4 @@ pip-log.txt
 .mr.developer.cfg
 
 #My Tests
-.jpg
+*.jpg
