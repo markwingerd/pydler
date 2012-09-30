@@ -25,12 +25,17 @@ def get_file(src, dest, block_size=16384, console_info=False):
     f_total = int(f.info().getheaders("Content-Length")[0])
     f_down = 0
 
+    # Initialize local file information.
+    out = open(dest, 'wb')
+
     # Download in block_sizes and output if requested.
     _output(f_down, f_total, console_info=True)
     while f_down < f_total:
         buffer = f.read(block_size)
         f_down += len(buffer)
+        out.write(buffer)
         _output(f_down, f_total, console_info=True)
+    out.close()
 
 def _output(current, file_size, console_info=False):
     """ Will display downloading information and file status to console.
@@ -53,4 +58,4 @@ def _output(current, file_size, console_info=False):
 
 ### This is just to test how the functions work. ###
 get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
-         '', console_info=True)
+         './img.jpg', console_info=True)
