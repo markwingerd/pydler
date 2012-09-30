@@ -1,0 +1,53 @@
+# checkdir.py Copyright (C) 2012 Mark Wingerd
+#
+# This program comes with ABSOLUTELY NO WARRANTY;
+# This is free software, and you are welcome to redistribute it
+# under certain conditions; Please see the file LICENSE for detail.
+#
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import urllib2
+import checkdir
+
+def get_file(src, dest, block_size=16384, console_info=False):
+    """ Download files and saves them.
+
+    src: File source.
+    dest: Destination of the file.
+    block_size: Optional. Amount of bytes downloaded at a time. Defaults
+                to 16384.
+    console_info: Optional. Displays download status to the console.
+                  Default is False.
+    """
+    f = urllib2.urlopen(src)
+    f_total = int(f.info().getheaders("Content-Length")[0])
+    f_down = 0
+
+    _output(f_down, f_total, console_info=True)
+    while f_down < f_total:
+        buffer = f.read(block_size)
+        f_down += len(buffer)
+        _output(f_down, f_total, console_info=True)
+
+def _output(current, file_size, console_info=False):
+    """ Will display downloading information and file status to console.
+
+    current: Current data downloaded.
+    total: Total amount of data to be downloaded.
+    console_info: Optonal. If true, will display messages to console.
+    """
+    if console_info:
+        if current == 0:
+            print "Downloading %s Bytes" % file_size
+        if 0 < current < file_size:
+            status = r"%10d  [%3.2f%%]" % (current, current * 100. / file_size)
+            print status
+        if current == file_size:
+            print "Download Complete. %s Bytes" % current
+
+
+
+###
+get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
+         '', console_info=True)
