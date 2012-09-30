@@ -20,10 +20,12 @@ def get_file(src, dest, block_size=16384, console_info=False):
     console_info: Optional. Displays download status to the console.
                   Default is False.
     """
+    # Initialize download information.
     f = urllib2.urlopen(src)
     f_total = int(f.info().getheaders("Content-Length")[0])
     f_down = 0
 
+    # Download in block_sizes and output if requested.
     _output(f_down, f_total, console_info=True)
     while f_down < f_total:
         buffer = f.read(block_size)
@@ -37,6 +39,7 @@ def _output(current, file_size, console_info=False):
     total: Total amount of data to be downloaded.
     console_info: Optonal. If true, will display messages to console.
     """
+    # Handle initial, progress, and completion messages based on current.
     if console_info:
         if current == 0:
             print "Downloading %s Bytes" % file_size
@@ -48,6 +51,6 @@ def _output(current, file_size, console_info=False):
 
 
 
-###
+### This is just to test how the functions work. ###
 get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
          '', console_info=True)
