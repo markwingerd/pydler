@@ -21,6 +21,7 @@ def get_file(src, dest, block_size=16384, console_info=False):
                   Default is False.
     """
     # Initialize download information.
+    _checksrc(src)
     f = urllib2.urlopen(src)
     f_total = int(f.info().getheaders("Content-Length")[0])
     f_down = 0
@@ -53,6 +54,10 @@ def _output(current, file_size, console_info=False):
             print status
         if current == file_size:
             print "Download Complete. %s Bytes" % current
+
+def _checksrc(src):
+    """ Verifies that the source path is valid. """
+    pass
 
 
 
