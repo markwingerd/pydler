@@ -8,6 +8,8 @@
 # -*- coding: utf-8 -*-
 
 import urllib2
+import urlparse
+
 import checkdir
 
 def get_file(src, dest, block_size=16384, console_info=False):
@@ -21,7 +23,7 @@ def get_file(src, dest, block_size=16384, console_info=False):
                   Default is False.
     """
     # Initialize download information.
-    _checksrc(src)
+    src = _checksrc(src)
     f = urllib2.urlopen(src)
     f_total = int(f.info().getheaders("Content-Length")[0])
     f_down = 0
@@ -57,10 +59,32 @@ def _output(current, file_size, console_info=False):
 
 def _checksrc(src):
     """ Verifies that the source path is valid. """
-    pass
+
+    # Adds http:// if none exsist in the url.
+    urlparts = urlparse.urlparse(src)
+    if not urlparts[0]:
+        src = 'http://' + src
+
+    print '\n\n\n' + src + '\n\n\n'
+    return src
+
+
 
 
 
 ### This is just to test how the functions work. ###
+# Proper use.
 get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
-         './img.jpg', console_info=True)
+         './img001.jpg', console_info=True)
+get_file('www.strangelyeverafter.com/image/mainImage001.jpg', 
+         './img002.jpg', console_info=True)
+get_file('strangelyeverafter.com/image/mainImage002.jpg', 
+         './img003.jpg', console_info=True)
+# Error in src.
+#get_file('image/mainImage000.jpg', './img.jpg', console_info=True)
+# Error in dest.
+#get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
+#         '.notafolder/img.jpg', console_info=True)
+# Invalid link.
+#get_file('http://www.strangelyeverafter.com/image/mainImage100.jpg', 
+#         './img.jpg', console_info=True)
