@@ -24,8 +24,11 @@ def get_file(src, dest, block_size=16384, console_info=False):
                   Default is False.
     """
     # Initialize download information.
-    src = _getsrcfile(src)
-    f = urllib2.urlopen(src)
+    try: 
+        f = _getsrcfile(src)
+    except: 
+        print 'ERROR: Source file is inaccessable.'
+        return 'ERROR: Source file is inaccessable.'
     f_total = int(f.info().getheaders("Content-Length")[0])
     f_down = 0
 
@@ -75,12 +78,11 @@ def _getsrcfile(src):
     connection = httplib.HTTPConnection(urlparts[1]) 
     connection.request('HEAD', urlparts[2]) 
     response = connection.getresponse() 
-    if response.status == 200:
-        print "Resource exists: %s" % response.status 
-    else:
-        print "Resource not found: %s" % response.status
+    if response.status != 200:
+        raise
 
-    return src
+    # Get the source file and return it.
+    return urllib2.urlopen(src)
 
 
 
@@ -90,12 +92,14 @@ def _getsrcfile(src):
 # Proper use.
 get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
          './img001.jpg', console_info=True)
-get_file('www.strangelyeverafter.com/img/mainImage001.jpg', 
+get_file('www.strangelyeverafter.com/image/mainImage001.jpg', 
          './img002.jpg', console_info=True)
 get_file('strangelyeverafter.com/image/mainImage002.jpg', 
          './img003.jpg', console_info=True)
 # Error in src.
-#get_file('image/mainImage000.jpg', './img.jpg', console_info=True)
+get_file('image/mainImage000.jpg', './img.jpg', console_info=True)
+get_file('http://www.strangelyeverafter.com/img/mainImage000.jpg', 
+         './img001.jpg', console_info=True)
 # Error in dest.
 #get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
 #         '.notafolder/img.jpg', console_info=True)
