@@ -66,7 +66,9 @@ def _output(current, file_size, console_info=False):
 
 
 def _getsrcfile(src):
-    """ Verifies that the source path is valid. """
+    """ Checks if a URL is valid and returns a urllib2 to the URL.
+    src: URL of the file needed to be downloaded.
+    returns: A urllib2 link to the src. """
 
     # Adds http:// if none exsist in the url.
     urlparts = urlparse.urlparse(src)
