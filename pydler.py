@@ -9,6 +9,7 @@
 
 import urllib2
 import urlparse
+import httplib
 
 import checkdir
 
@@ -23,7 +24,7 @@ def get_file(src, dest, block_size=16384, console_info=False):
                   Default is False.
     """
     # Initialize download information.
-    src = _checksrc(src)
+    src = _getsrcfile(src)
     f = urllib2.urlopen(src)
     f_total = int(f.info().getheaders("Content-Length")[0])
     f_down = 0
@@ -39,6 +40,8 @@ def get_file(src, dest, block_size=16384, console_info=False):
         out.write(buffer)
         _output(f_down, f_total, console_info=True)
     out.close()
+
+
 
 def _output(current, file_size, console_info=False):
     """ Will display downloading information and file status to console.
@@ -57,15 +60,26 @@ def _output(current, file_size, console_info=False):
         if current == file_size:
             print "Download Complete. %s Bytes" % current
 
-def _checksrc(src):
+
+
+def _getsrcfile(src):
     """ Verifies that the source path is valid. """
 
     # Adds http:// if none exsist in the url.
     urlparts = urlparse.urlparse(src)
     if not urlparts[0]:
         src = 'http://' + src
+        urlparts = urlparse.urlparse(src)
 
-    print '\n\n\n' + src + '\n\n\n'
+    # Check if link has content
+    connection = httplib.HTTPConnection(urlparts[1]) 
+    connection.request('HEAD', urlparts[2]) 
+    response = connection.getresponse() 
+    if response.status == 200:
+        print "Resource exists: %s" % response.status 
+    else:
+        print "Resource not found: %s" % response.status
+
     return src
 
 
@@ -76,7 +90,7 @@ def _checksrc(src):
 # Proper use.
 get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
          './img001.jpg', console_info=True)
-get_file('www.strangelyeverafter.com/image/mainImage001.jpg', 
+get_file('www.strangelyeverafter.com/img/mainImage001.jpg', 
          './img002.jpg', console_info=True)
 get_file('strangelyeverafter.com/image/mainImage002.jpg', 
          './img003.jpg', console_info=True)
