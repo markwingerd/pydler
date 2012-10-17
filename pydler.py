@@ -8,8 +8,8 @@
 # -*- coding: utf-8 -*-
 
 import urllib2
-import urlparse
-import httplib
+import urlparse, httplib
+import sys, os
 
 import checkdir
 
@@ -33,6 +33,8 @@ def get_file(src, dest, block_size=16384, console_info=False):
     f_down = 0
 
     # Initialize local file information.
+    dest = _verifydest(dest)
+    print dest
     out = open(dest, 'wb')
 
     # Download in block_sizes and output if requested.
@@ -90,34 +92,49 @@ def _verifydest(dest):
     """ Uses the checkdir library to verify that the dest is valid
         and create any additional directories needed. 
     dest: A string containing a path and filename for our file.
-    returns: Unknown right now.
+    returns: dest variable which may have changes.
     """
 
     # Verify the path and filename is valid.
-    # Verify there is a filename included.
-    # Split the path and the filename.
+    if 'linux' in sys.platform:
+        dest = checkdir.validate_string_unix(dest)
+    else:
+        raise 'OS not supported'
+
+    # Verify there is a filename included and split.
+    # ADD FUNCTION TO CHECKDIR TO RETURN FILEPATH/FILENAME
+
     # Check if the path exists. Create if it does not.
-    pass
+    dest = './test/' #quickfix for an error.
+    if not os.path.exists(dest):
+        print 'HELLO'
+        os.makedirs('./test')
+    dest = './test/img001.jpg' #quickfix for an error.
 
-
-
+    return dest
 
 
 ### This is just to test how the functions work. ###
 # Proper use.
+"""
 get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
          './img001.jpg', console_info=True)
 get_file('www.strangelyeverafter.com/image/mainImage001.jpg', 
          './img002.jpg', console_info=True)
 get_file('strangelyeverafter.com/image/mainImage002.jpg', 
          './img003.jpg', console_info=True)
+get_file('http://www.strangelyeverafter.com/image/mainImage003.jpg', 
+         'img.jpg', console_info=True)
+# Additional feature could include the lack of a dest variable. The program
+# would take the filename from the source and apply it to the dest variable.
+"""
 # Error in src.
 get_file('image/mainImage000.jpg', './img.jpg', console_info=True)
 get_file('http://www.strangelyeverafter.com/img/mainImage000.jpg', 
          './img001.jpg', console_info=True)
 # Error in dest.
-#get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
-#         '.notafolder/img.jpg', console_info=True)
+get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
+         './notafolder/img000.jpg', console_info=True)
 # Invalid link.
 #get_file('http://www.strangelyeverafter.com/image/mainImage100.jpg', 
 #         './img.jpg', console_info=True)
