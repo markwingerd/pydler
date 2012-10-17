@@ -86,6 +86,19 @@ def _getsrcfile(src):
     # Get the source file and return it.
     return urllib2.urlopen(src)
 
+def _verifydest(dest):
+    """ Uses the checkdir library to verify that the dest is valid
+        and create any additional directories needed. 
+    dest: A string containing a path and filename for our file.
+    returns: Unknown right now.
+    """
+
+    # Verify the path and filename is valid.
+    # Verify there is a filename included.
+    # Split the path and the filename.
+    # Check if the path exists. Create if it does not.
+    pass
+
 
 
 
