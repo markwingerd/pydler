@@ -33,8 +33,11 @@ def get_file(src, dest, block_size=16384, console_info=False):
     f_down = 0
 
     # Initialize local file information.
-    dest = _verifydest(dest)
-    print dest
+    try:
+        dest = _verifydest(dest)
+    except:
+        print 'ERROR: No filename provided or other misc error.'
+        return 'ERROR: No filename provided or other misc error.'
     out = open(dest, 'wb')
 
     # Download in block_sizes and output if requested.
@@ -96,20 +99,19 @@ def _verifydest(dest):
     """
 
     # Verify the path and filename is valid.
-    if 'linux' in sys.platform:
+    if 'linux' in sys.platform: 
         dest = checkdir.validate_string_unix(dest)
     else:
         raise 'OS not supported'
 
-    # Verify there is a filename included and split.
-    # ADD FUNCTION TO CHECKDIR TO RETURN FILEPATH/FILENAME
+    # Splits the path into a path and filename. Tests if there is a filename
+    splitPath = os.path.split(dest)
+    if splitPath[1] == '': 
+        raise 'No file name provided'
 
     # Check if the path exists. Create if it does not.
-    dest = './test/' #quickfix for an error.
-    if not os.path.exists(dest):
-        print 'HELLO'
-        os.makedirs('./test')
-    dest = './test/img001.jpg' #quickfix for an error.
+    if not os.path.exists(splitPath[0]):
+        os.makedirs(splitPath[0])
 
     return dest
 
@@ -129,12 +131,14 @@ get_file('http://www.strangelyeverafter.com/image/mainImage003.jpg',
 # would take the filename from the source and apply it to the dest variable.
 """
 # Error in src.
-get_file('image/mainImage000.jpg', './img.jpg', console_info=True)
+get_file('image/mainImage000.jpg', './img.jpg', console_info=True) #Raises Error
 get_file('http://www.strangelyeverafter.com/img/mainImage000.jpg', 
-         './img001.jpg', console_info=True)
+         './img001.jpg', console_info=True) #Raises Error
 # Error in dest.
 get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
-         './notafolder/img000.jpg', console_info=True)
+         './notafolder/img000.jpg', console_info=True) #Creates Folder
+get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
+         './notafolder/', console_info=True) #Raises Error
 # Invalid link.
 #get_file('http://www.strangelyeverafter.com/image/mainImage100.jpg', 
 #         './img.jpg', console_info=True)

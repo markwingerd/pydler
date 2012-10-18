@@ -230,6 +230,24 @@ def delete_seperator_unix(s, pathType=UNIX_PATH_TYPE):
     return s
 
 
+def split_path_and_file(s, pathType):
+    """
+    Returns a touple of two with the path and filename.
+
+    pathtype - Required. Defines which split to use.
+
+    Returns a touple with the file path in one cell, the
+    filename in the other.
+    """
+    split = _get_path_parts(s, pathType)
+    fileName = split[len(split)-1]
+    # If there is no extention on fileName, assume it's a folder and
+    # delete fileNames contents.
+    if not '.' in fileName: fileName = ''
+    pathName = s[0:len(s)-len(fileName)]
+
+    return (pathName, fileName)
+
 
 def _get_path_parts(s, pathType):
     """ 

@@ -1,5 +1,7 @@
 *.py[co]
 *gitignore~
+*.jpg
+/test
 
 # Packages
 *.egg
