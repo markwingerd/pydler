@@ -49,6 +49,8 @@ def get_file(src, dest, block_size=16384, console_info=False):
         _output(f_down, f_total, console_info=True)
     out.close()
 
+    return
+
 
 
 def _output(current, file_size, console_info=False):
@@ -116,29 +118,30 @@ def _verifydest(dest):
     return dest
 
 
-### This is just to test how the functions work. ###
-# Proper use.
-"""
-get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
-         './img001.jpg', console_info=True)
-get_file('www.strangelyeverafter.com/image/mainImage001.jpg', 
-         './img002.jpg', console_info=True)
-get_file('strangelyeverafter.com/image/mainImage002.jpg', 
-         './img003.jpg', console_info=True)
-get_file('http://www.strangelyeverafter.com/image/mainImage003.jpg', 
-         'img.jpg', console_info=True)
-# Additional feature could include the lack of a dest variable. The program
-# would take the filename from the source and apply it to the dest variable.
-"""
-# Error in src.
-get_file('image/mainImage000.jpg', './img.jpg', console_info=True) #Raises Error
-get_file('http://www.strangelyeverafter.com/img/mainImage000.jpg', 
-         './img001.jpg', console_info=True) #Raises Error
-# Error in dest.
-get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
-         './notafolder/img000.jpg', console_info=True) #Creates Folder
-get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
-         './notafolder/', console_info=True) #Raises Error
-# Invalid link.
-#get_file('http://www.strangelyeverafter.com/image/mainImage100.jpg', 
-#         './img.jpg', console_info=True)
+def test():
+    ### This is just to test how the functions work. ###
+    # Proper use.
+    """
+    get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
+             './img001.jpg', console_info=True)
+    get_file('www.strangelyeverafter.com/image/mainImage001.jpg', 
+             './img002.jpg', console_info=True)
+    get_file('strangelyeverafter.com/image/mainImage002.jpg', 
+             './img003.jpg', console_info=True)
+    get_file('http://www.strangelyeverafter.com/image/mainImage003.jpg', 
+             'img.jpg', console_info=True)
+    # Additional feature could include the lack of a dest variable. The program
+    # would take the filename from the source and apply it to the dest variable.
+    """
+    # Error in src.
+    get_file('image/mainImage000.jpg', './img.jpg', console_info=True) #Raises Error
+    get_file('http://www.strangelyeverafter.com/img/mainImage000.jpg', 
+            './img001.jpg', console_info=True) #Raises Error
+    # Error in dest.
+    get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
+            './notafolder/img000.jpg', console_info=True) #Creates Folder
+    get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
+            './notafolder/', console_info=True) #Raises Error
+    # Invalid link.
+    #get_file('http://www.strangelyeverafter.com/image/mainImage100.jpg', 
+    #         './img.jpg', console_info=True)
