@@ -10,6 +10,7 @@
 import urllib2
 import urlparse, httplib
 import sys, os
+import argparse
 
 import checkdir
 
@@ -145,3 +146,21 @@ def test():
     # Invalid link.
     #get_file('http://www.strangelyeverafter.com/image/mainImage100.jpg', 
     #         './img.jpg', console_info=True)
+
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('src', action='store',
+                        help='URL for the download')
+    parser.add_argument('dest', action='store',
+                        help='Folder to place the file')
+    parser.add_argument('-o', action='store_true',
+                        help='Will display messages')
+    parser.add_argument('-bs', default=16384,
+                        help='Amount of bytes to download at a time')
+    args = parser.parse_args()
+
+    print args
+    get_file(args.src, args.dest, block_size=args.bs, console_info=args.o)
