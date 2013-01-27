@@ -111,8 +111,8 @@ def _verifydest(dest):
     if splitPath[1] == '': 
         raise 'No file name provided'
 
-    # Check if the path exists. Create if it does not.
-    if not os.path.exists(splitPath[0]):
+    # Check if there is a path and it exists. Create if it does not.
+    if splitPath[0] and (not os.path.exists(splitPath[0])):
         os.makedirs(splitPath[0])
 
     return dest
