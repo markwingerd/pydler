@@ -134,14 +134,17 @@ def test():
     # would take the filename from the source and apply it to the dest variable.
     """
     # Error in src.
+    print 'The following will fail.'
     get_file('image/mainImage000.jpg', './img.jpg', console_info=True) #Raises Error
     get_file('http://www.strangelyeverafter.com/img/mainImage000.jpg', 
             './img001.jpg', console_info=True) #Raises Error
-    # Error in dest.
-    get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
-            './notafolder/img000.jpg', console_info=True) #Creates Folder
     get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
             './notafolder/', console_info=True) #Raises Error
+
+    print 'The following will succeed.'
+    # The directory notafolder should be created.
+    get_file('http://www.strangelyeverafter.com/image/mainImage000.jpg', 
+            './notafolder/img000.jpg', console_info=True) #Creates Folder
     # Invalid link.
     #get_file('http://www.strangelyeverafter.com/image/mainImage100.jpg', 
     #         './img.jpg', console_info=True)
